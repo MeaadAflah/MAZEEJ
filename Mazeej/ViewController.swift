@@ -14,7 +14,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     let imagePicker = UIImagePickerController()
     var image1 : UIImage?
     var foodName : String?
-    var calories = 0.0
+    var calories : Double?
     var healthLAbels : [String]?
     var diet : [String]?
     var ingrd : [String]?
@@ -67,13 +67,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     {
         if segue.destination is ViewController2
         {
+            
             let vc = segue.destination as? ViewController2
             vc?.image = image1
-            vc?.food =  self.foodName
-            vc?.calories = self.calories
-            vc?.ingrd = self.ingrd
-            vc?.diet = self.diet
-            vc?.healthLAbels = self.healthLAbels
+            vc?.food =  foodName
+            vc?.calories = calories
+            vc?.ingrd = ingrd
+            vc?.diet = diet
+            vc?.healthLAbels = healthLAbels
         }
     }
     
@@ -81,6 +82,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             try? detect(image: pickedImage)
             self.image1 = pickedImage
+            
             dismiss(animated: true) {
                 self.performSegue(withIdentifier: "segue", sender: self)}
         }
@@ -114,10 +116,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             }
             
             DispatchQueue.main.async {
-                if((topResult.confidence*100) < 70.00){
+                if((topResult.confidence*100) < 30.00){
                     self.foodName = "we couldnt find it"
                     }else{
-                    self.foodName = "name: \(topResult.identifier) conf \(topResult.confidence*100)"
+                    //self.foodName = topResult.identifier
                     print(topResult.identifier)
                     
                     
@@ -129,6 +131,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                     
                     let input_label = topResult.identifier
                     let search_label = input_label.replacingOccurrences(of: " ", with: "%20")
+                    self.foodName = input_label
                     //print("HELLO \(search_label)")
                     // search_label  =>  topResult.identifier (HERE)
                     
@@ -146,7 +149,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                                 // 2#
                                 // rec.recipe.label==search_label->
                                 
-                                if(rec.recipe.label==input_label){
+                                if(rec.recipe.label == input_label){
                                      self.calories = rec.recipe.calories
                                      self.healthLAbels = rec.recipe.healthLabels
                                      self.ingrd = rec.recipe.ingredientLines

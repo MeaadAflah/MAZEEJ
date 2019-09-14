@@ -27,13 +27,10 @@ class ViewController2: UIViewController {
         super.viewDidLoad()
         imageDetails.image = image
         foodName.text = food
-        
-    
-        inglabel.text = ingrd?.joined(separator: ",")
-        dietLabel.text = diet?.joined(separator: ",")
-        healthLabel.text = healthLAbels?.joined(separator: ",")
-        calLabel.text = ("\(calories)")
-        
+//        inglabel.text = ingrd!.joined(separator: ",")
+//        dietLabel.text = diet?.joined(separator: ",")
+//        healthLabel.text = healthLAbels?.joined(separator: ",")
+        //calLabel.text = String(format:"%f", calories!)
         
         
         // Do any additional setup after loading the view.
